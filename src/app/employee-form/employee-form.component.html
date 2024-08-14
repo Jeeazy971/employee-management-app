@@ -1,0 +1,30 @@
+<h2>Formulaire employées</h2>
+
+<div *ngIf="errorMessage != ''">
+  {{errorMessage}}
+</div>
+
+<form (ngSubmit)="onSubmit()">
+
+  <div>
+    <label for="firstName">Prénom</label>
+    <input type="text" name="firstName" [(ngModel)]="employee.firstName">
+  </div>
+  <div>
+    <label for="lastName">Nom</label>
+    <input type="text" name="lastName" [(ngModel)]="employee.lastName">
+  </div>
+  <div>
+    <label for="email">Adresse email</label>
+    <input type="email" name="email" [(ngModel)]="employee.email">
+  </div>
+  <div>
+    <label for="phone">Numero de téléphone</label>
+    <input type="tel" name="phone" [(ngModel)]="employee.phone">
+  </div>
+  <div>
+    <label for="position">Poste</label>
+    <input type="text" name="position" [(ngModel)]="employee.position">
+  </div>
+  <button type="submit">Créer</button>
+</form>
