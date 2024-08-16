@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Employee } from '../../models/employee';
 import { CommonModule } from '@angular/common';
 import { EmployeeService } from '../employee.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-employee-form',
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './employee-form.component.html',
   styleUrl: './employee-form.component.css',
 })
-export class EmployeeFormComponent {
+export class EmployeeFormComponent implements OnInit {
   employee: Employee = {
     id: 0,
     firstName: '',
@@ -22,23 +22,58 @@ export class EmployeeFormComponent {
     position: '',
   };
 
+  isEditing: boolean = false;
+
   errorMessage: string = '';
 
   constructor(
     private employeeService: EmployeeService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
-  onSubmit(): void {
-    this.employeeService.createEmployee(this.employee).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: (error) => {
-        console.error('Error adding employee:', error);
-        this.errorMessage = `L'ajout d'un employé a échoué. Veuillez réessayer plus tard.
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((result) => {
+      const id = result.get('id');
+
+      if (id) {
+        this.isEditing = true;
+        this.employeeService.getEmployeeById(Number(id)).subscribe({
+          next: (result) => {
+            this.employee = result;
+          },
+          error: (error) => {
+            this.errorMessage = `La modification d'un employé a échoué. Veuillez réessayer plus tard.
                     Erreur: ${error.status}`;
-      },
+          },
+        });
+      }
     });
+  }
+
+  onSubmit(): void {
+    if (this.isEditing) {
+      this.employeeService.updateEmployee(this.employee).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.error('Error updating employee:', error);
+          this.errorMessage = `La modification d'un employé a échoué. Veuillez réessayer plus tard.
+                    Erreur: ${error.status}`;
+        },
+      });
+    } else {
+      this.employeeService.createEmployee(this.employee).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.error('Error adding employee:', error);
+          this.errorMessage = `L'ajout d'un employé a échoué. Veuillez réessayer plus tard.
+                      Erreur: ${error.status}`;
+        },
+      });
+    }
   }
 }
