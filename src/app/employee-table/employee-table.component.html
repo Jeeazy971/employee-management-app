@@ -1,30 +1,39 @@
-<h2>Employées</h2>
+<h2 class="text-center py-5">Employées</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Prénom</th>
-      <th>Nom</th>
-      <th>Email</th>
-      <th>Téléphone</th>
-      <th>Poste</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+<div class="card">
 
-  <tbody>
-    <tr *ngFor="let employee of employees">
-      <td>{{employee.id}}</td>
-      <td>{{employee.firstName}}</td>
-      <td>{{employee.lastName}}</td>
-      <td>{{employee.email}}</td>
-      <td>{{employee.phone}}</td>
-      <td>{{employee.position}}</td>
-      <td>
-        <button (click)="deleteEmployee(employee.id)">Supprimer</button>
-        <button (click)="editEmployee(employee.id)">Éditer</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <div class="card-header">
+    <p class="fs-5">Aperçu</p>
+  </div>
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Poste</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let employee of employees">
+          <td>{{employee.id}}</td>
+          <td>{{employee.firstName}}</td>
+          <td>{{employee.lastName}}</td>
+          <td>{{employee.email}}</td>
+          <td>{{employee.phone}}</td>
+          <td>{{employee.position}}</td>
+          <td>
+            <button class="btn btn-danger me-2" (click)="deleteEmployee(employee.id)">Supprimer</button>
+            <button class="btn btn-primary" (click)="editEmployee(employee.id)">Éditer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
